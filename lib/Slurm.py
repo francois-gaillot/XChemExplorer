@@ -7,4 +7,5 @@ header = (
         "#SBATCH --mem-per-cpu=32G\n"
         "#SBATCH --time=02:00:00\n" # Time limit hrs:min:sec
         "#SBATCH --output=%x_%j_slurm.out\n" # Standard output and error log
+        "#SBATCH --partition=shared\n"
         )
