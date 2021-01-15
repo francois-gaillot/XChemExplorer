@@ -876,15 +876,18 @@ class create_png_and_cif_of_compound(QtCore.QThread):
                     f.close()
                     self.Logfile.insert('submitting array job with maximal 100 jobs running on cluster')
                     self.Logfile.insert('using the following command:')
-                    self.Logfile.insert('         qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} acedrg_master.sh'.format(str(counter), self.max_queue_jobs))
-                    os.system('qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} -N acedrg acedrg_master.sh'.format(str(counter), self.max_queue_jobs))
+                    self.Logfile.insert('         qsub -P labxchem -q shared -t 1:{0!s} -tc {1!s} acedrg_master.sh'.format(str(counter), self.max_queue_jobs))
+                    # self.Logfile.insert('         qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} acedrg_master.sh'.format(str(counter), self.max_queue_jobs))
+                    os.system('qsub -P labxchem -q shared -t 1:{0!s} -tc {1!s} -N acedrg acedrg_master.sh'.format(str(counter), self.max_queue_jobs))
+                    # os.system('qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} -N acedrg acedrg_master.sh'.format(str(counter), self.max_queue_jobs))
                 else:
                     self.Logfile.insert("cannot start ARRAY job: make sure that 'module load global/cluster' is in your .bashrc or .cshrc file")
             elif self.external_software['qsub']:
                 self.Logfile.insert('submitting {0!s} individual jobs to cluster'.format((str(counter))))
                 self.Logfile.insert('WARNING: this could potentially lead to a crash...')
                 for i in range(counter):
-                    self.Logfile.insert('qsub -q medium.q -N acedrg xce_acedrg_{0!s}.sh'.format((str(i+1))))
+                    self.Logfile.insert('qsub -q shared -N acedrg xce_acedrg_{0!s}.sh'.format((str(i+1))))
+                    # self.Logfile.insert('qsub -q medium.q -N acedrg xce_acedrg_{0!s}.sh'.format((str(i+1))))
                     os.system('qsub -N acedrg xce_acedrg_{0!s}.sh'.format((str(i+1))))
             else:
                 self.Logfile.insert('running %s consecutive ACEDRG jobs on your local machine')
@@ -1013,10 +1016,12 @@ class fit_ligands(QtCore.QThread):
                 self.Logfile.insert('submitting array job with maximal 100 jobs running on cluster')
                 self.Logfile.insert('using the following command:')
                 self.Logfile.insert(
-                    'qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} autofit_ligand_master.sh'.format(str(self.n),
+                    'qsub -P labxchem -q shared -t 1:{0!s} -tc {1!s} autofit_ligand_master.sh'.format(str(self.n),
+                    # 'qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} autofit_ligand_master.sh'.format(str(self.n),
                                                                                                self.max_queue_jobs))
                 os.system(
-                    'qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} autofit_ligand_master.sh'.format(str(self.n - 1),
+                    'qsub -P labxchem -q shared -t 1:{0!s} -tc {1!s} autofit_ligand_master.sh'.format(str(self.n - 1),
+                    # 'qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} autofit_ligand_master.sh'.format(str(self.n - 1),
                                                                                                self.max_queue_jobs))
             else:
                 self.Logfile.insert(
@@ -1025,8 +1030,10 @@ class fit_ligands(QtCore.QThread):
             self.Logfile.insert('submitting {0!s} individual jobs to cluster'.format((str(self.n))))
             self.Logfile.insert('WARNING: this could potentially lead to a crash...')
             for i in range(1, self.n):
-                self.Logfile.insert('qsub -q medium.q xce_autofit_ligand_{0!s}.sh'.format(str(i)))
-                os.system('qsub -q medium.q xce_autofit_ligand_{0!s}.sh'.format(str(i)))
+                self.Logfile.insert('qsub -q shared xce_autofit_ligand_{0!s}.sh'.format(str(i)))
+                # self.Logfile.insert('qsub -q medium.q xce_autofit_ligand_{0!s}.sh'.format(str(i)))
+                os.system('qsub -q shared xce_autofit_ligand_{0!s}.sh'.format(str(i)))
+                # os.system('qsub -q medium.q xce_autofit_ligand_{0!s}.sh'.format(str(i)))
         else:
             self.Logfile.insert(
                 'running {0!s} consecutive autofit_ligand jobs on your local machine'.format(str(self.n - 1)))
@@ -1357,9 +1364,11 @@ class run_dimple_on_all_autoprocessing_files(QtCore.QThread):
                 print(os.getcwd())
                 self.Logfile.insert('submitting array job with maximal 100 jobs running on cluster')
                 self.Logfile.insert('using the following command:')
-                self.Logfile.insert('qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} dimple_master.sh'.format(str(n+1), self.max_queue_jobs))
+                self.Logfile.insert('qsub -P labxchem -q shared -t 1:{0!s} -tc {1!s} dimple_master.sh'.format(str(n+1), self.max_queue_jobs))
+                # self.Logfile.insert('qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} dimple_master.sh'.format(str(n+1), self.max_queue_jobs))
                 if self.using_remote_qsub_submission:
-                    os.system(str(self.remote_qsub_submission).replace("qsub'", str('cd ' + str(os.getcwd()) + '; ' + 'qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} dimple_master.sh'
+                    os.system(str(self.remote_qsub_submission).replace("qsub'", str('cd ' + str(os.getcwd()) + '; ' + 'qsub -P labxchem -q shared -t 1:{0!s} -tc {1!s} dimple_master.sh'
+                    # os.system(str(self.remote_qsub_submission).replace("qsub'", str('cd ' + str(os.getcwd()) + '; ' + 'qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} dimple_master.sh'
                                                                   .format(str(n+1), self.max_queue_jobs))) + "'")
 
                 else:
@@ -1370,7 +1379,8 @@ class run_dimple_on_all_autoprocessing_files(QtCore.QThread):
             self.Logfile.insert('submitting {0!s} individual jobs to cluster'.format((str(n+1))))
             self.Logfile.insert('WARNING: this could potentially lead to a crash...')
             for i in range(n+1):
-                self.Logfile.insert('qsub -q medium.q -N dimple xce_dimple_{0!s}.sh'.format((str(i+1))))
+                self.Logfile.insert('qsub -q shared -N dimple xce_dimple_{0!s}.sh'.format((str(i+1))))
+                # self.Logfile.insert('qsub -q medium.q -N dimple xce_dimple_{0!s}.sh'.format((str(i+1))))
                 os.system('qsub -N dimple xce_dimple_{0!s}.sh'.format((str(i+1))))
         else:
             self.Logfile.insert('running %s consecutive DIMPLE jobs on your local machine')
@@ -1830,16 +1840,20 @@ class run_dimple_on_all_autoprocessing_files_new(QtCore.QThread):
                 f.close()
                 self.Logfile.insert('submitting array job with maximal 100 jobs running on cluster')
                 self.Logfile.insert('using the following command:')
-                self.Logfile.insert('qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} {2!s}_master.sh'.format(str(self.n), self.max_queue_jobs, self.pipeline))
-                os.system('qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} {2!s}_master.sh'.format(str(self.n-1), self.max_queue_jobs, self.pipeline))
+                self.Logfile.insert('qsub -P labxchem -q shared -t 1:{0!s} -tc {1!s} {2!s}_master.sh'.format(str(self.n), self.max_queue_jobs, self.pipeline))
+                # self.Logfile.insert('qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} {2!s}_master.sh'.format(str(self.n), self.max_queue_jobs, self.pipeline))
+                os.system('qsub -P labxchem -q shared -t 1:{0!s} -tc {1!s} {2!s}_master.sh'.format(str(self.n-1), self.max_queue_jobs, self.pipeline))
+                # os.system('qsub -P labxchem -q medium.q -t 1:{0!s} -tc {1!s} {2!s}_master.sh'.format(str(self.n-1), self.max_queue_jobs, self.pipeline))
             else:
                 self.Logfile.insert("cannot start ARRAY job: make sure that 'module load global/cluster' is in your .bashrc or .cshrc file")
         elif self.external_software['qsub']:
             self.Logfile.insert('submitting {0!s} individual jobs to cluster'.format((str(self.n))))
             self.Logfile.insert('WARNING: this could potentially lead to a crash...')
             for i in range(1,self.n):
-                self.Logfile.insert('qsub -q medium.q xce_{0!s}_{1!s}.sh'.format(self.pipeline,str(i)))
-                os.system('qsub -q medium.q xce_{0!s}_{1!s}.sh'.format(self.pipeline,str(i)))
+                self.Logfile.insert('qsub -q shared xce_{0!s}_{1!s}.sh'.format(self.pipeline,str(i)))
+                # self.Logfile.insert('qsub -q medium.q xce_{0!s}_{1!s}.sh'.format(self.pipeline,str(i)))
+                os.system('qsub -q shared xce_{0!s}_{1!s}.sh'.format(self.pipeline,str(i)))
+                # os.system('qsub -q medium.q xce_{0!s}_{1!s}.sh'.format(self.pipeline,str(i)))
         else:
             self.Logfile.insert('running {0!s} consecutive {1!s} jobs on your local machine'.format(str(self.n-1),self.pipeline))
             for i in range(1,self.n):
