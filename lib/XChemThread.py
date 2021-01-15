@@ -31,6 +31,7 @@ from XChemUtils import misc
 import XChemDB
 import XChemLog
 import XChemMain
+import Slurm
 
 import iotbx.mtz
 

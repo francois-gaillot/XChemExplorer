@@ -19,6 +19,7 @@ import time
 sys.path.append(os.getenv('XChemExplorer_DIR')+'/lib')
 import XChemLog
 from XChemUtils import pdbtools
+import Slurm
 
 
 def GetSerial(ProjectPath,xtalID):

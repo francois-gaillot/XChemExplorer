@@ -24,6 +24,7 @@ from iotbx import mtz
 sys.path.append(os.getenv('XChemExplorer_DIR')+'/lib')
 import XChemDB
 import XChemLog
+import Slurm
 
 
 class process:
