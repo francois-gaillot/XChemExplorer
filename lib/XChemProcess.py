@@ -6,6 +6,7 @@ from PyQt4 import QtGui, QtCore
 sys.path.append(os.path.join(os.getenv('XChemExplorer_DIR'),'lib'))
 import XChemLog
 import XChemDB
+import Slurm
 
 class run_xia2(QtCore.QThread):
     def __init__(self,initial_model_directory,run_dict,protocol,spg,ref,reso_limit,cc_half,xce_logfile,external_software,ccp4_scratch_directory,max_queue_jobs,database,overwrite):
@@ -39,7 +40,9 @@ class run_xia2(QtCore.QThread):
             script=''
 
             if self.external_software['qsub']:
-                script+='#PBS -joe -N XCE_reprocess\n'
+                slurm_header = Slurm.header.format(subprocess = "reprocess")
+                script += slurm_header
+                # script+='#PBS -joe -N XCE_reprocess\n'
             else:
                 script+='#!'+os.getenv('SHELL')+'\n'
 

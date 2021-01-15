@@ -926,7 +926,8 @@ class fit_ligands(QtCore.QThread):
 
     def get_header(self,sampleID):
         if self.queueing_system_available:
-            top_line = '#PBS -joe -N XCE_dimple\n'
+            top_line = Slurm.header.format(subprocess = "dimple")
+            # top_line = '#PBS -joe -N XCE_dimple\n'
         else:
             top_line = '#!' + os.getenv('SHELL') + '\n'
 
@@ -1201,7 +1202,8 @@ class run_dimple_on_all_autoprocessing_files(QtCore.QThread):
             os.system('/bin/rm final.pdb 2> /dev/null')
 
             if self.queueing_system_available:
-                top_line='#PBS -joe -N XCE_dimple\n'
+                top_line = Slurm.header.format(subprocess = "dimple")
+                # top_line='#PBS -joe -N XCE_dimple\n'
             else:
                 top_line='#!'+os.getenv('SHELL')+'\n'
 
@@ -1474,7 +1476,8 @@ class run_dimple_on_all_autoprocessing_files_new(QtCore.QThread):
         os.system('touch phenix.ligand_pipeline_run_in_progress')
 
         if self.queueing_system_available:
-            top_line='#PBS -joe -N XCE_{0!s}\n'.format(self.pipeline)
+            top_line = Slurm.header.format(subprocess = self.pipeline)
+            # top_line='#PBS -joe -N XCE_{0!s}\n'.format(self.pipeline)
         else:
             top_line='#!'+os.getenv('SHELL')+'\n'
 
@@ -1574,7 +1577,8 @@ class run_dimple_on_all_autoprocessing_files_new(QtCore.QThread):
         os.system('touch pipedream_run_in_progress')
 
         if self.queueing_system_available:
-            top_line='#PBS -joe -N XCE_{0!s}\n'.format(self.pipeline)
+            top_line = Slurm.header.format(subprocess = self.pipeline)
+            # top_line='#PBS -joe -N XCE_{0!s}\n'.format(self.pipeline)
         else:
             top_line='#!'+os.getenv('SHELL')+'\n'
 
@@ -1696,7 +1700,8 @@ class run_dimple_on_all_autoprocessing_files_new(QtCore.QThread):
         os.system('/bin/rm final.pdb 2> /dev/null')
 
         if self.queueing_system_available:
-            top_line='#PBS -joe -N XCE_dimple\n'
+            top_line = Slurm.header.format(subprocess = "dimple")
+            # top_line='#PBS -joe -N XCE_dimple\n'
         else:
             top_line='#!'+os.getenv('SHELL')+'\n'
 

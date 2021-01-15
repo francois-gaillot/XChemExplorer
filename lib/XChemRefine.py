@@ -392,7 +392,8 @@ class Refine(object):
         os.system('/bin/rm refine.pdb refine.mtz refine.split.bound-state.pdb validation_summary.txt validate_ligands.txt 2fofc.map fofc.map refine_molprobity.log')
 
         if external_software['qsub']:
-            pbs_line='#PBS -joe -N XCE_refmac\n'
+            pbs_line = Slurm.header.format(subprocess = "refmac")
+            # pbs_line='#PBS -joe -N XCE_refmac\n'
         else:
             pbs_line='\n'
 
@@ -958,7 +959,8 @@ class panddaRefine(object):
         os.system('/bin/rm %s' %files_to_remove)
 
         if external_software['qsub']:
-            pbs_line='#PBS -joe -N XCE_refmac\n'
+            pbs_line = Slurm.header.format(subprocess = "refmac")
+            # pbs_line='#PBS -joe -N XCE_refmac\n'
         else:
             pbs_line='\n'
 
@@ -1500,7 +1502,8 @@ class RefineOld(object):
         os.system('/bin/rm refine.pdb refine.mtz validation_summary.txt validate_ligands.txt 2fofc.map fofc.map refine_molprobity.log')
 
         if external_software['qsub']:
-            pbs_line='#PBS -joe -N XCE_refmac\n'
+            pbs_line = Slurm.header.format(subprocess = "refmac")
+            # pbs_line='#PBS -joe -N XCE_refmac\n'
         else:
             pbs_line='\n'
 

@@ -114,7 +114,8 @@ class process:
             os.chdir('{0!s}/{1!s}/Dimple'.format(self.project_directory, self.xtalID))
 
         if self.queueing_system_available:
-            top_line='#PBS -joe -N XCE_dimple'
+            top_line = Slurm.header.format(subprocess = "dimple")
+            # top_line='#PBS -joe -N XCE_dimple'
         else:
             top_line='#!'+os.getenv('SHELL')
 
@@ -216,7 +217,8 @@ class helpers:
         header='#!'+os.getenv('SHELL')+'\n'
         if external_software['qsub']:
             if not external_software['qsub_array']:
-                header='#PBS -joe -N xce_acedrg\n'
+                header = Slurm.header.format(subprocess = "acedrg")
+                # header='#PBS -joe -N xce_acedrg\n'
 
         # check if CompoundSMILEScovalent field is not Null
         # CompoundSMILESproduct can be used to create only a CIF file for the product to make fitting easier
