@@ -212,7 +212,7 @@ class PanddaTab():
         label = QtGui.QLabel('Calculate average map by:')
         xce_object.pandda_analyse_input_params_vbox.addWidget(label)
         xce_object.pandda_calc_map_combobox = QtGui.QComboBox()
-        average_map = ['mean_map', 'median_map']
+        average_map = ['mean_map', 'medn_map']
         self.layout_funcs.populate_combobox(average_map, xce_object.pandda_calc_map_combobox)
         xce_object.pandda_analyse_input_params_vbox.addWidget(xce_object.pandda_calc_map_combobox)
 

@@ -467,7 +467,7 @@ class run_pandda_analyse(QtCore.QThread):
                 '#!'+os.getenv('SHELL')+'\n' +
                 '\n' +
                 source_file +
-                '\n' + 'module load pymol/1.8.2.0' + ' \n' +
+                '\n' + 'module load PyMOL/1.8.0.0' + ' \n' +
                 'cd ' + self.panddas_directory + '\n' +
                 '\n'
                 )
