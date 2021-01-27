@@ -336,7 +336,7 @@ class run_pandda_export(QtCore.QThread):
             else:
 
                 Cmds = (
-                    'source /dls/science/groups/i04-1/software/pandda-update/ccp4/ccp4-7.0/bin/ccp4.setup-sh\n'
+                    'source $CCP4/bin/ccp4.setup-sh\n'
 #                    'source '+os.path.join(os.getenv('XChemExplorer_DIR'),'setup-scripts','pandda.setup-sh')+'\n'
                     'pandda.export'
                     ' pandda_dir=%s' %self.panddas_directory+
@@ -438,7 +438,7 @@ class run_pandda_analyse(QtCore.QThread):
 #            else:
 #                source_file=''
             # v1.2.1 - pandda.setup files should be obsolete now that pandda is part of ccp4
-            source_file='source /dls/science/groups/i04-1/software/pandda_0.2.12/ccp4/ccp4-7.0/bin/ccp4.setup-sh\n'
+            source_file='source $CCP4/bin/ccp4.setup-sh\n'
             source_file += 'export XChemExplorer_DIR="' + os.getenv('XChemExplorer_DIR') + '"\n'
 
             if os.path.isfile(self.filter_pdb + '.pdb'):
