@@ -177,6 +177,10 @@ class run_pandda_export(QtCore.QThread):
                         site_name=entry[1]
                         site_comment=entry[2]
                         break
+                site_is_not_defined = ("site_name" not in vars() or "site_name" not in globals())
+                if site_is_not_defined:
+                    site_name = "No site name found."
+                    site_comment = "No comment found about this site."
 
                 # check if EVENT map exists in project directory
                 event_map=''
@@ -579,13 +583,13 @@ class run_pandda_analyse(QtCore.QThread):
                                                                str('cd ' +
                                                                    self.panddas_directory +
                                                                    '; ' +
-                                                                   "qsub -P labxchem -q shared -N pandda 5 -l exclusive,m_mem_free=100G pandda.sh'"))
+                                                                   "srun --time=2-0:00:00 --partition=shared --job-name=pandda_XCE --mem=100G bash pandda.sh --output=%x.o%j --error=%x.e%j'"))
                                                                    # "qsub -P labxchem -q medium.q -N pandda 5 -l exclusive,m_mem_free=100G pandda.sh'"))
                 os.system(submission_string)
                 self.Logfile.insert(str('running PANDDA remotely, using: ' + submission_string))
             else:
                 self.Logfile.insert('running PANDDA on cluster, using qsub...')
-                os.system('qsub -P labxchem -q shared -N pandda -l exclusive,m_mem_free=100G pandda.sh')
+                os.system('srun --time=2-0:00:00 --partition=shared --job-name=pandda_XCE --mem=100G bash pandda.sh --output=%x.o%j --error=%x.e%j')
                 # os.system('qsub -P labxchem -q medium.q -N pandda -l exclusive,m_mem_free=100G pandda.sh')
 
         self.emit(QtCore.SIGNAL('datasource_menu_reload_samples'))
