@@ -518,6 +518,7 @@ class Refine(object):
             'ln -s ./Refine_%s/refine_%s.pdb refine.pdb\n' %(Serial,Serial)+
             'ln -s ./Refine_%s/refine_%s.mtz refine.mtz\n' %(Serial,Serial)+
             'ln -s refine.pdb refine.split.bound-state.pdb\n'
+            'ln -s dimple.pdb dimple.initial-ground-state.pdb\n'
             '\n'
             'ln -s Refine_%s/validate_ligands.txt .\n' %Serial+
             'ln -s Refine_%s/refine_molprobity.log .\n' %Serial+
@@ -836,25 +837,27 @@ class panddaRefine(object):
         #######################################################
         # giant_merge_conformations
         Logfile.insert('trying to merge modified bound state with ground state')
-        if os.path.isfile(os.path.join(self.ProjectPath,self.xtalID,'cootOut','Refine_'+str(Serial),self.xtalID+'-ensemble-model.pdb')):
+        ground_state=os.path.join(self.ProjectPath, self.xtalID, self.xtalID + '-pandda-input.pdb')
+        modified_bound_state = os.path.join(self.ProjectPath,self.xtalID,'cootOut','Refine_'+str(Serial),'refine.modified.pdb')
+        ensemble_model = os.path.join(self.ProjectPath,self.xtalID,'cootOut','Refine_'+str(Serial),self.xtalID+'-ensemble-model.pdb')
+        if os.path.isfile(ensemble_model):
+            model_dir, pdb_file = os.path.split(ensemble_model)
             Logfile.insert('seems to be an initial refinement after pandda.export, no need to merge the conformations')
-            os.chdir(os.path.join(self.ProjectPath,self.xtalID,'cootOut','Refine_'+str(Serial)))
-            Logfile.insert('running giant.make_restraints %s:' %self.xtalID+'-ensemble-model.pdb')
-#            os.system('giant.make_restraints %s' %self.xtalID+'-ensemble-model.pdb')
+            os.chdir(model_dir)
+            Logfile.insert('running giant.make_restraints %s:' %pdb_file)
             cmd = (
                 'export XChemExplorer_DIR="%s"\n' %os.getenv('XChemExplorer_DIR')+
                 'source %s\n' %os.path.join(os.getenv('XChemExplorer_DIR'),'setup-scripts','pandda.setup-sh\n') +
-                'giant.make_restraints %s-ensemble-model.pdb' %self.xtalID
+                'giant.make_restraints %s' %pdb_file
             )
             Logfile.insert(cmd+'\n')
             os.system(cmd)
-        elif os.path.isfile(os.path.join(self.ProjectPath,self.xtalID,'refine.split.ground-state.pdb')):
-            Logfile.insert('found model of ground state: '+os.path.join(self.ProjectPath,self.xtalID,'refine.split.ground-state.pdb'))
-            if os.path.isfile(os.path.join(self.ProjectPath,self.xtalID,'cootOut','Refine_'+str(Serial),'refine.modified.pdb')):
+        elif os.path.isfile(ground_state):
+            Logfile.insert('found model of ground state: '+ ground_state)
+            if os.path.isfile(modified_bound_state):
                 Logfile.insert('found model of modified bound state')
-                os.chdir(os.path.join(self.ProjectPath,self.xtalID,'cootOut','Refine_'+str(Serial)))
-                ground_state=os.path.join(self.ProjectPath,self.xtalID,'refine.split.ground-state.pdb')
-                bound_state='refine.modified.pdb'
+                bound_state_dir, bound_state = os.path.split(modified_bound_state)
+                os.chdir(bound_state_dir)
                 Logfile.insert('running giant.merge_conformations major=%s minor=%s' %(ground_state,bound_state))
                 if os.getcwd().startswith('/dls'):
                     cmd = (
@@ -1031,6 +1034,7 @@ class panddaRefine(object):
         if make_all_links:
             add_links_line = (
             'ln -s Refine_%s/refine_%s.split.bound-state.pdb ./refine.split.bound-state.pdb\n' %(panddaSerial,Serial)+
+            # 'ln -s ./dimple.pdb ./refine.split.ground-state.pdb\n'+
             'ln -s Refine_%s/refine_%s.split.ground-state.pdb ./refine.split.ground-state.pdb\n' %(panddaSerial,Serial)+
             'ln -s Refine_%s/refine_%s.output.bound-state.pdb ./refine.output.bound-state.pdb\n' %(panddaSerial,Serial)+
             'ln -s Refine_%s/refine_%s.output.ground-state.pdb ./refine.output.ground-state.pdb\n' %(panddaSerial,Serial)

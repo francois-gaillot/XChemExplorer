@@ -1167,14 +1167,17 @@ class GUI(object):
             os.chdir(os.path.join(self.project_directory, self.xtalID))
 
         if self.refinementProtocol.startswith('pandda'):
-            self.Logfile.insert('==> COOT: looking for ground-state model ' + os.path.join(self.project_directory, self.xtalID,
-                                                                         self.pdb_style.replace('.pdb',
-                                                                                                '') + '.split.ground-state.pdb'))
+            # self.Logfile.insert('==> COOT: looking for ground-state model ' + os.path.join(self.project_directory, self.xtalID,
+            #                                                              self.pdb_style.replace('.pdb',
+            #                                                                                     '') + '.split.ground-state.pdb'))
+            ground_state_path = os.path.join(self.project_directory, self.xtalID, self.xtalID + "-pandda-input.pdb")
+            self.Logfile.insert('==> COOT: looking for ground-state model ' + ground_state_path)
 #            print '=> XCE: looking for ground-state model', os.path.join(self.project_directory, self.xtalID,
 #                                                                         self.pdb_style.replace('.pdb',
 #                                                                                                '') + '.split.ground-state.pdb')
-            if os.path.isfile(os.path.join(self.project_directory, self.xtalID,
-                                           self.pdb_style.replace('.pdb', '') + '.split.ground-state.pdb')):
+            if os.path.isfile(ground_state_path):
+            # if os.path.isfile(os.path.join(self.project_directory, self.xtalID,
+                                           # self.pdb_style.replace('.pdb', '') + '.split.ground-state.pdb')):
                 self.Logfile.insert('==> COOT: found ground-state model')
 #                print '=> XCE: found ground-state model'
                 os.chdir(os.path.join(self.project_directory, self.xtalID))
@@ -1184,10 +1187,11 @@ class GUI(object):
                 except UnboundLocalError:
                     color_wheel_rotation = 80
                 coot.set_colour_map_rotation_on_read_pdb(color_wheel_rotation)
-                imol = coot.handle_read_draw_molecule_with_recentre(os.path.join(self.project_directory, self.xtalID,
-                                                                                 self.pdb_style.replace('.pdb',
-                                                                                                        '') + '.split.ground-state.pdb'),
-                                                                    0)
+                imol = coot.handle_read_draw_molecule_with_recentre(ground_state_path, 0)
+                # imol = coot.handle_read_draw_molecule_with_recentre(os.path.join(self.project_directory, self.xtalID,
+                #                                                                  self.pdb_style.replace('.pdb',
+                #                                                                                         '') + '.split.ground-state.pdb'),
+                #                                                     0)
                 coot.set_colour_by_molecule(imol)
                 coot.set_mol_active(imol, 0)
             else:

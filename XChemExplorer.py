@@ -2565,8 +2565,7 @@ class XChemExplorer(QtGui.QApplication):
             self.html_export_directory_label.setText(self.html_export_directory)
 
             self.group_deposition_directory_label.setText(self.group_deposit_directory)
-
-            self.datasets_summary_file_label.setText(self.datasets_summary_file)
+            # self.datasets_summary_file_label.setText(self.datasets_summary_file)
 
             self.data_source_file = pickled_settings['data_source']
             if self.data_source_file != '':
